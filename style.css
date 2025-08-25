@@ -385,13 +385,25 @@ a:hover {
     border-bottom-style: solid;
 }
 
-body {
+/* body {
     background: #fce4ec url('assets/illustration-rain-futuristic-city.jpg') repeat center center;
     background-size: cover;
     font-family: 'Press Start 2P', cursive;
     color: #4a4a4a;
     image-rendering: pixelated;
+} */
+
+body {
+  background: #fce4ec url('assets/illustration-rain-futuristic-city.webp') no-repeat center center fixed;
+  background-size: cover; /* ✅ Scales image to cover the entire viewport */
+  font-family: 'Press Start 2P', cursive;
+  color: #4a4a4a;
+  image-rendering: pixelated;
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* ✅ Ensure body fills the viewport */
 }
+
 
 .cyber-header {
   display: flex;
