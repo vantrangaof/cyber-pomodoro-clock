@@ -386,7 +386,7 @@ a:hover {
 }
 
 body {
-    background: #fce4ec url('assets/illustration-rain-futuristic-city.jpg') no-repeat center center;
+    background: #fce4ec url('assets/illustration-rain-futuristic-city.jpg') repeat center center;
     background-size: cover;
     font-family: 'Press Start 2P', cursive;
     color: #4a4a4a;
