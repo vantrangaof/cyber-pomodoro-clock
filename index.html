@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🍅 My Pomodoro Clock</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+  <div class="app" role="application" aria-label="My Pomodoro Clock">
+    <header class="cyber-header">
+      <h1>
+        <span class="logo">⚡</span> My Pomodoro
+        <span class="badge" id="phaseBadge">Focus</span>
+      </h1>
+      <div class="controls">
+        <button class="ghost" id="notifBtn" title="Enable desktop notifications">🔔</button>
+        <button class="ghost" id="soundBtn" title="Test chime sound">🎶</button>
+        <button class="ghost" id="resetAllBtn" title="Reset settings and stats">↩️</button>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Mode tabs">
+      <div class="tab active" role="tab" aria-selected="true" tabindex="0" data-mode="focus">Focus</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-mode="short">Short Break</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-mode="long">Long Break</div>
+    </nav>
+
+    <section class="timer-wrap">
+      <div class="left">
+        <div class="gif-wrap">
+          <img 
+            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnV1MTcycWFlbDdsaWs5ajMxNzZkZW1iMjBuemhlZnU0MG52MW12NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6XX4V0O8a0xdS/giphy.gif" 
+            id="modeGif"
+            class="study-girl"
+            alt="Pomodoro Main GIF"
+          >
+        </div>
+        <div class="time" id="time">25:00</div>
+        <div class="subtitle" id="subtitle">Let’s focus. You’ve got this! ✨</div>
+        <div class="actions">
+          <button id="startPause" class="primary toggle">▶️ Start</button>
+          <button id="skip" class="ghost">⏭️ Skip</button>
+        </div>
+      </div>
+
+      <aside class="right">
+        <div class="group">
+          <h3>Durations (minutes)</h3>
+          <div class="rows">
+            <div class="row"><label for="focusMins">Focus</label><input id="focusMins" type="number" min="1" max="180" /></div>
+            <div class="row"><label for="shortMins">Short Break</label><input id="shortMins" type="number" min="1" max="60" /></div>
+            <div class="row"><label for="longMins">Long Break</label><input id="longMins" type="number" min="1" max="90" /></div>
+            <div class="row"><label for="cycles">Long break every</label><input id="cycles" type="number" min="1" max="12" /></div>
+            <!-- <span class="pill">focus sessions</span> -->
+          </div>
+        </div>
+        <div class="group">
+          <h3>Options</h3>
+          <div class="rows cyber-options">
+            <div class="rows"> 
+              <div class="row">
+                <label for="autoStartBreaks">Auto-start breaks</label>
+                <input id="autoStartBreaks" type="checkbox" />
+              </div> 
+              <div class="row">
+                <label for="autoStartFocus">Auto-start focus</label>
+                <input id="autoStartFocus" type="checkbox" />
+              </div> 
+              <div class="row">
+                <label for="tickSound">Ticking sound</label>
+                <input id="tickSound" type="checkbox" />
+              </div> 
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <h3>Today</h3>
+          <div class="rows">
+            <div class="row"><label>Focus sessions done</label><div class="pill" id="doneCount">0</div></div>
+            <div class="row"><label>Total focus time</label><div class="pill" id="totalMinutes">0 min</div></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      Offline & private. Your settings are saved in your browser. <br /> 
+      Shortcuts: <strong>Space</strong> start/pause, <strong>N</strong> skip, <strong>R</strong> reset timer.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
