@@ -14,7 +14,36 @@ const defaultState = {
   totalFocusSeconds: 0,
   lastDate: new Date().toDateString(),
   running: false,
+  goal: ''
 };
+
+const goalInput   = document.getElementById('goalInput');
+const saveGoalBtn = document.getElementById('saveGoal');
+const goalDisplay = document.getElementById('goalDisplay');
+const goalText    = document.getElementById('goalText');
+const editGoalBtn = document.getElementById('editGoal');
+const clearGoalBtn= document.getElementById('clearGoal');
+
+// Break tools
+const suggestExerciseBtn  = document.getElementById('suggestExercise');
+const exerciseOut = document.getElementById('exerciseSuggestion');
+const memeBtn     = document.getElementById('makeMeme');
+const memeImg     = document.getElementById('memeImg');
+const memeCaption = document.getElementById('memeCaption');
+
+// Assistant
+const tabsBar = document.querySelector('.assistant-tabs');
+const panes   = document.querySelectorAll('.assistant-pane');
+const sumIn   = document.getElementById('summarizeInput');
+const sumBtn  = document.getElementById('summarizeBtn');
+const sumOut  = document.getElementById('summarizeOut');
+const brTopic = document.getElementById('brainstormTopic');
+const brBtn   = document.getElementById('brainstormBtn');
+const brOut   = document.getElementById('brainstormOut');
+const chatLog = document.getElementById('chatLog');
+const chatIn  = document.getElementById('chatInput');
+const chatSend= document.getElementById('chatSend');
+
 
 // GIFS
 const GIFS = {
@@ -35,6 +64,40 @@ const GIFS = {
     "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNW00aG53NWJyNmZ1Y2twdmZjbnhzZDUwZ3BlYTNha2cyMHd2azZvZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Lo6BKNnNjKFy4A0Gc8/giphy.gif",
   ],
 };
+
+const EXERCISES = [
+  "👀 20-20-20: Look 20 ft away for 20s",
+  "🧍 Neck rolls 5x each side",
+  "🤸 Shoulder shrugs 10x",
+  "🧘 Box breathing 4×4×4×4",
+  "🚶 1-minute walk & hydrate",
+  "🙆 Wrist circles 10x"
+];
+
+const MEME_IMAGES = [
+  // add your own or keep a few fun placeholders
+  "https://i.imgur.com/YOQ2y0D.jpeg",
+  "https://i.imgur.com/fJ4F6qE.jpeg",
+  "https://i.imgur.com/0fW8VQm.jpeg"
+];
+const MEME_TEMPLATES = [
+  (goal) => `Me before focus: “I’ll just check my phone once.”\nMe after: 2 hours later…`,
+  (goal) => `When the plan is ${goal || '“get stuff done”'} but the brain says snack time.`,
+  () => `Short break: 5 minutes\nMe: *starts a new TV series*`,
+];
+
+suggestExerciseBtn?.addEventListener('click', () => {
+  const pick = EXERCISES[Math.floor(Math.random()*EXERCISES.length)];
+  exerciseOut.style.display = "block"
+  exerciseOut.textContent = pick;
+});
+
+
+function onEnterBreak(){
+  if (exerciseOut) exerciseOut.textContent =
+      EXERCISES[Math.floor(Math.random()*EXERCISES.length)];
+  memeBtn?.click();
+}
 
 // MUSIC
 // const tickAudio = new Audio('assets/tick.mp3');
@@ -164,7 +227,27 @@ inputs.tickSound.addEventListener("change", () => {
 });
 
 // Hotkeys
+// window.addEventListener("keydown", (e) => {
+//   if (e.code === "Space") {
+//     e.preventDefault();
+//     toggleStartPause();
+//   }
+//   if (e.key.toLowerCase() === "n") {
+//     e.preventDefault();
+//     completePhase(true);
+//   }
+//   if (e.key.toLowerCase() === "r") {
+//     e.preventDefault();
+//     resetTimer();
+//   }
+// });
+
 window.addEventListener("keydown", (e) => {
+  const tag = document.activeElement.tagName.toLowerCase();
+  if (tag === "input" || tag === "textarea" || document.activeElement.isContentEditable) {
+    return; // don't trigger while typing
+  }
+
   if (e.code === "Space") {
     e.preventDefault();
     toggleStartPause();
@@ -178,6 +261,7 @@ window.addEventListener("keydown", (e) => {
     resetTimer();
   }
 });
+
 
 // Notification Permission on first load (non-blocking)
 if (Notification && Notification.permission === "default") {
@@ -214,6 +298,7 @@ function switchMode(mode, fromTab = false) {
 function toggleStartPause() {
   state.running = !state.running;
    if (state.mode === "focus" && state.running) {
+    speakStart(state.durations.focus, state.goal);
     focusMusic.play()
       .then(() => console.log("Music playing"))
       .catch(err => console.error("Play failed:", err));
@@ -224,6 +309,17 @@ function toggleStartPause() {
     stopTimer();
   }
   render();
+}
+
+function speakStart(mins, goal){
+  try {
+    const msg = new SpeechSynthesisUtterance(
+      `Starting a deep focus session for ${mins} minutes.${goal ? ' Goal: ' + goal : ''}`
+    );
+    msg.lang = 'en-US'; msg.rate = 1.03; msg.pitch = 1;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+  } catch(e) { /* ok */ }
 }
 
 function startTimer() {
@@ -340,13 +436,19 @@ function render() {
   doneCount.textContent = state.sessionsDone;
   totalMinutes.textContent = `${Math.floor(state.totalFocusSeconds / 60)} min`;
 
-  // Change GIF based on current mode
-  // const gifEl = document.getElementById('modeGif');
-  // if (gifEl) {
-  //     gifEl.src = GIFS[state.mode] || GIFS.focus;
-  // }
 
   document.title = `${timeEl.textContent} • ${labelForMode(state.mode)} 🍅`;
+
+  subtitle.textContent = subtitleForMode(state.mode, state.running);
+  goalDisplay?.classList.toggle('active', state.mode === 'focus');
+
+  document.addEventListener("DOMContentLoaded", () => {
+  if (state.mode === 'short' || state.mode === 'long') {
+    breakTools.classList.remove('hidden');
+    goalWrap.classList.add('hidden');
+    onEnterBreak(); // optional: auto suggest exercise + meme
+  }
+});
 }
 
 function labelForMode(m) {
@@ -485,3 +587,93 @@ render();
 //     console.warn("Autoplay blocked. User must start playback manually.");
 //   });
 // }, { once: true });
+
+// init goal
+goalInput.value = state.goal || "";
+syncGoalUI();
+
+saveGoalBtn?.addEventListener('click', () => {
+  state.goal = goalInput.value.trim();
+  saveState(); syncGoalUI();
+});
+
+editGoalBtn?.addEventListener('click', () => {
+  goalInput.value = state.goal;
+  goalDisplay.hidden = true;
+  document.querySelector('.goal-editor').style.display = 'flex';
+  goalInput.focus();
+});
+
+clearGoalBtn?.addEventListener('click', () => {
+  state.goal = "";
+  saveState(); syncGoalUI();
+});
+
+function syncGoalUI(){
+  const has = !!state.goal;
+  goalText.textContent = state.goal;
+  goalDisplay.hidden = !has;
+  const editor = document.querySelector('.goal-editor');
+  if (editor) editor.style.display = has ? 'none' : 'flex';
+}
+
+
+
+const tabs = document.querySelectorAll('nav .tab');
+const breakTools = document.getElementById('breakTools');
+const goalWrap = document.getElementById('goal-wrap');
+
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const mode = tab.dataset.mode;
+
+    // Show/hide Break Tools
+    if (mode === 'short' || mode === 'long') {
+      breakTools.classList.remove('hidden');
+      goalWrap.classList.add('hidden')
+    } else {
+      breakTools.classList.add('hidden');
+      goalWrap.classList.remove('hidden')
+    }
+  });
+});
+
+
+async function fetchMeme() {
+  try {
+    const response = await fetch("https://meme-api.com/gimme");
+    const data = await response.json();
+
+    // This API gives you already-captioned memes
+    document.querySelector("#meme-img").src = data.url;  // meme image
+    // document.querySelector("#meme-title").innerText = data.title; // caption/title
+  } catch (error) {
+    console.error("Error fetching meme:", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", fetchMeme);
+document.getElementById("generateMemeBtn").addEventListener("click", fetchMeme);
+
+
+const playBtn = document.getElementById('playMusic');
+const popup = document.getElementById('musicPopup');
+const closeBtn = document.getElementById('closeMusic');
+const iframe = document.getElementById('scPlayer');
+
+playBtn.addEventListener('click', () => {
+  playBtn.textContent = "⏸ Pause music";
+  popup.style.display = 'flex';
+  
+  // Force autoplay when opened
+  iframe.src = iframe.src.replace('auto_play=false', 'auto_play=true');
+});
+
+closeBtn.addEventListener('click', () => {
+  playBtn.textContent = "🎶 Play music";
+  popup.style.display = 'none';
+
+  // Stop the music by resetting the iframe
+  iframe.src = iframe.src.replace('auto_play=true', 'auto_play=false');
+});

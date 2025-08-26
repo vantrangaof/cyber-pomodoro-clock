@@ -41,6 +41,41 @@
         </div>
         <div class="time" id="time">25:00</div>
         <div class="subtitle" id="subtitle">Let’s focus. You’ve got this! ✨</div>
+        
+        <!-- Session Goal -->
+        <div id="goal-wrap" class="goal-wrap hidden">
+          <div class="goal-editor">
+            <input id="goalInput" placeholder="What's your goal this session?" />
+            <button id="saveGoal" class="ghost">Save</button>
+          </div>
+          <div id="goalDisplay" class="goal-display" hidden>
+            <span class="goal-emoji">🎯</span>
+            <span id="goalText"></span>
+            <button id="editGoal" class="ghost sm">✏️</button>
+            <button id="clearGoal" class="ghost sm">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Session Break Tools -->
+        <div id="breakTools"  class="group break-tools hidden">
+          <h3>Break Tools</h3>
+          <div class="rows">
+            <div class="row">
+              <button id="suggestExercise" class="ghost wide">💪 Get a micro-exercise</button>
+            </div>
+            <div class="row"><div id="exerciseSuggestion" class="pill mono hidden"></div></div>
+
+            <div class="row">
+              <button id="generateMemeBtn" class="ghost wide">Generate Meme</button>
+            </div>
+            <div class="row">
+              <div class="meme-container">
+                <img id="meme-img" src="" alt="Meme">
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="actions">
           <button id="startPause" class="primary toggle">▶️ Start</button>
           <button id="skip" class="ghost">⏭️ Skip</button>
@@ -48,6 +83,18 @@
       </div>
 
       <aside class="right">
+        <div class="row">
+          <button id="playMusic" class="ghost wide">🎶 Play music</button>
+        </div>
+        <!-- Music Popup -->
+        <div id="musicPopup" class="music-modal">
+          <div class="music-content">
+            <button id="closeMusic" class="close-btn">✖</button>
+            <iframe id="scPlayer" width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1068854503&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+            </iframe>
+          </div>
+        </div>
         <div class="group">
           <h3>Durations (minutes)</h3>
           <div class="rows">
@@ -55,7 +102,6 @@
             <div class="row"><label for="shortMins">Short Break</label><input id="shortMins" type="number" min="1" max="60" /></div>
             <div class="row"><label for="longMins">Long Break</label><input id="longMins" type="number" min="1" max="90" /></div>
             <div class="row"><label for="cycles">Long break every</label><input id="cycles" type="number" min="1" max="12" /></div>
-            <!-- <span class="pill">focus sessions</span> -->
           </div>
         </div>
         <div class="group">
@@ -86,6 +132,35 @@
         </div>
       </aside>
     </section>
+
+    <!-- <section class="assistant">
+  <div class="assistant-tabs">
+    <button data-pane="summarize" class="active">📝 Summarize</button>
+    <button data-pane="brainstorm">💡 Brainstorm</button>
+    <button data-pane="chat">💬 Chat</button>
+  </div>
+
+  <div id="pane-summarize" class="assistant-pane show">
+    <textarea id="summarizeInput" placeholder="Paste a long article here…"></textarea>
+    <button id="summarizeBtn" class="primary">Summarize</button>
+    <pre id="summarizeOut" class="assistant-out"></pre>
+  </div>
+
+  <div id="pane-brainstorm" class="assistant-pane">
+    <input id="brainstormTopic" placeholder="Topic to ideate on…" />
+    <button id="brainstormBtn" class="primary">Generate ideas</button>
+    <ul id="brainstormOut" class="bullets"></ul>
+  </div>
+
+  <div id="pane-chat" class="assistant-pane">
+    <div id="chatLog" class="chatlog"></div>
+    <div class="chatbar">
+      <input id="chatInput" placeholder="Ask anything…" />
+      <button id="chatSend" class="primary">Send</button>
+    </div>
+  </div>
+</section> -->
+
 
     <footer>
       Offline & private. Your settings are saved in your browser. <br /> 
