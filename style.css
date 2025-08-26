@@ -652,6 +652,43 @@ button.ghost:hover {
 .chat-msg.user { color:#aef; }
 .chat-msg.bot  { color:#cfe7a8; } */
 
+/* 
+
+.music-content {
+  background: #111;
+  border: 2px solid #ff0099;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 0 20px #ff00ff;
+  position: relative;
+} */
+
+/* .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+} */
+
+/* .music-modal {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  flex-direction: column;
+  z-index: 1000;
+} */
+
 .music-modal {
   display: none;
   position: fixed;
@@ -666,23 +703,34 @@ button.ghost:hover {
 }
 
 .music-content {
-  background: #111;
-  border: 2px solid #ff0099;
-  border-radius: 12px;
-  padding: 20px;
-  width: 100%;
-  max-width: 700px;
-  box-shadow: 0 0 20px #ff00ff;
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
+.music-header {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.minimize-btn,
 .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   background: transparent;
-  color: #fff;
-  font-size: 18px;
   border: none;
+  font-size: 18px;
+  color: white;
   cursor: pointer;
+}
+
+/* Minimized State */
+.music-modal.minimized {
+  width: 200px;
+  height: auto;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.music-modal.minimized iframe {
+  width: 200px; 
+  height: 300px
 }

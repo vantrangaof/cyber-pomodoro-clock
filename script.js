@@ -656,17 +656,17 @@ async function fetchMeme() {
 document.addEventListener("DOMContentLoaded", fetchMeme);
 document.getElementById("generateMemeBtn").addEventListener("click", fetchMeme);
 
-
 const playBtn = document.getElementById('playMusic');
 const popup = document.getElementById('musicPopup');
 const closeBtn = document.getElementById('closeMusic');
+const minimizeBtn = document.getElementById('minimizeMusic');
 const iframe = document.getElementById('scPlayer');
 
 playBtn.addEventListener('click', () => {
   playBtn.textContent = "⏸ Pause music";
   popup.style.display = 'flex';
-  
-  // Force autoplay when opened
+  popup.classList.remove('minimized'); // Always restore full size when opened
+
   iframe.src = iframe.src.replace('auto_play=false', 'auto_play=true');
 });
 
@@ -674,6 +674,9 @@ closeBtn.addEventListener('click', () => {
   playBtn.textContent = "🎶 Play music";
   popup.style.display = 'none';
 
-  // Stop the music by resetting the iframe
   iframe.src = iframe.src.replace('auto_play=true', 'auto_play=false');
+});
+
+minimizeBtn.addEventListener('click', () => {
+  popup.classList.toggle('minimized');
 });

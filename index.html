@@ -85,12 +85,15 @@
       <aside class="right">
         <div class="row">
           <button id="playMusic" class="ghost wide">🎶 Play music</button>
-        </div>
+        </div>       
         <!-- Music Popup -->
         <div id="musicPopup" class="music-modal">
           <div class="music-content">
-            <button id="closeMusic" class="close-btn">✖</button>
-            <iframe id="scPlayer" width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+            <div class="music-header">
+              <button id="minimizeMusic" class="minimize-btn">➖</button>
+              <button id="closeMusic" class="close-btn">✖</button>
+            </div>
+            <iframe id="scPlayer" width="600px" height="300px" scrolling="no" frameborder="no" allow="autoplay"
               src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1068854503&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
             </iframe>
           </div>
